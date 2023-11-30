@@ -1,0 +1,90 @@
+Exception Handling
+- Throwable() is superclass of all classes related to exception
+- Error and Exception extends Throwable() class
+	- You can prevent errors but not handle them eg, StackOverFlowError, OutOfMemory
+	- Types of Exception those which are subclass of RuntimeException (Unchecked Exception) and those which are not called Checked Exception 
+	- If a method throws checked exception then calling method should handle it or throw it (forced to handle)
+	- If a method throws unchecked exception then calling method need not do anything about it (not forced to handle)
+- Class NullPointerException extends Class RuntimeException which extends Class Exception 
+- We can have multiple catch blocks
+- finally block executed even if exception happens or not
+- finally will not execute in case of JVM crash i.e. System.exit(1)
+- we can have try-finally block without catch block It will compile
+- Checked Exceptions 
+	1) InterruptedException - Thrown when a thread is waiting, sleeping, or otherwise occupied,and the thread is interrupted, 
+	   either before or during the activity.
+
+** throws ** - Java throws keyword is used in the method signature to declare an exception which might be thrown by the function while the execution of the 	  code. (It doesnot handle the exception)
+- It gives an information to the programmer that there may occur an exception. 
+- So, it is better for the programmer to provide the exception handling code so that the normal flow of the program can be maintained.
+Syntax - 
+	return_type method_name() throws exception_class_name{  
+			//method code  
+	}  
+
+- Checked exception should be declared
+- *If we are calling a method that declares an exception, we must either caught or declare the exception.
+eg.
+import java.io.IOException;  
+class Testthrows1{  
+  void m()throws IOException{  
+    throw new IOException("device error");//checked exception  
+  }  
+  void n()throws IOException{  
+    m();  
+  }  
+  void p(){  
+   try{  
+    n();  
+   }catch(Exception e){System.out.println("exception handled");}  
+  }  
+  public static void main(String args[]){  
+   Testthrows1 obj=new Testthrows1();  
+   obj.p();  
+   System.out.println("normal flow...");  
+  }  
+}  
+
+Output :- exception handled 
+	  normal flow...
+
+- We can rethrow exception by throwing same exception in catch block	
+- We can declare multiple exceptions using throws keyword that can be thrown by the method. For example, main() throws IOException, SQLException
+- Using throws keyword, we can declare both checked and unchecked exceptions. However, the throws keyword can be used to propagate checked exceptions only
+
+** throw ** - Java throw keyword is used to throw an exception explicitly in the code,inside function or block of code
+	    - throw is used within the method.
+	    - We are allowed to throw only one exception at a time i.e. we cannot throw multiple exceptions.
+
+public class TestThrow {  
+    //defining a method  
+    public static void checkNum(int num) {  
+        if (num < 1) {  
+            throw new ArithmeticException("\nNumber is negative, cannot calculate square");  
+        }  
+        else {  
+            System.out.println("Square of " + num + " is " + (num*num));  
+        }  
+    }  
+    //main method  
+    public static void main(String[] args) {  
+            TestThrow obj = new TestThrow();  
+            obj.checkNum(-3);  
+            System.out.println("Rest of the code..");  
+    }  
+}  
+
+- ** try with resouces ** - The purpose of the try-with-resources statement in Java is to automatically manage resources that implement the AutoCloseable interface. It ensures that the declared resources are properly closed or released, even in the presence of exceptions, without requiring explicit finally blocks.
+- The interface that a resource must implement to be compatible with the try-with-resources statement is AutoCloseable. The AutoCloseable interface provides a single method, close(), which is invoked automatically by the try-with-resources statement to release or close the resource when it is no longer needed.
+
+- We can  handle multiple exception in catch block using pipe delimeter ' | ' feature of Java 7
+
+eg try{
+
+  }
+  catch( IOException | SQLException ex)
+{
+
+}
+	
+	    -   
