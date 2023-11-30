@@ -1,0 +1,31 @@
+Apache Camel
+Sql Component - allows you to work with databases using JDBC queries. Uses Spring-JDBC in background for sql handling
+
+-Difference between sql and JDBC component - is that in case of SQL the query is a property of the endpoint. 
+Used endpoint URI notation 
+eg. 	sql:select * from table where id=# order by name[?options]
+
+- It uses message payload as named parameters passed to the query.
+eg.use named parameters by using :#name_of_the_parameter style as shown:
+
+	sql:select * from table where id=:#myId order by name[?options]
+
+- When using named parameters, Camel will lookup the names from, in the given precedence:
+
+ 1.from a Simple expressions
+
+ 2.from message body if its a java.util.Map
+
+ 3.from message headers
+
+- '#' symbol denotes the parameters to an SQL query is substituted with
+- Dependancy -
+<dependency>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-sql</artifactId>
+    <version>x.x.x</version>
+    <!-- use the same version as your Camel core version -->
+</dependency>
+
+- CamelSqlRowCount - The number of rows returned for select operations, returned as an Integer object. This header is not provided when using outputType=StreamList.
+
