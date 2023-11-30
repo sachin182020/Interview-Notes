@@ -1,0 +1,116 @@
+Stream operations and pipelines
+- Stream operations are divided into "intermediate" and "terminal" operations, and are combined to form stream pipelines
+- A stream pipeline consists of a source (such as a Collection, an array, a generator function, or an I/O channel); followed by zero or more intermediate operations such as Stream.filter or Stream.map; and a terminal operation such as Stream.forEach or Stream.reduce.
+- "Intermediate operations" return a new stream. 
+	Eg., Stream.filter() -  does not actually perform any filtering, but return a new stream that when traversered contains the elements of initial stream that matches given predicate or condition.
+
+- "Terminal operations", such as Stream.forEach or IntStream.sum, may traverse the stream to produce a result or a side-effect. After the terminal operation is performed, the stream pipeline is considered consumed, and can no longer be used; if you need to traverse the same data source again, you must return to the data source to get a new stream
+
+Difference between functional programming vs structural programming
+- In FP we try to avoid mutations of variable (variable whose values are changing)
+
+*Intermediate Operator
+- Ouput of intermediate operator is another stream. eg., .filter(),.map()
+
+*Terminel Operator
+- Consumes the stream and traverse the stream to produce a result eg. .forEach(), .reduce()
+
+Stream Intermediate Operations:
+- .filter() - returns a stream having elements that matches with predicate or condions eg. .filter(e-> e%2==0)
+- .map() - Returns a stream consisting of the results of applying the given function to the elements of this  stream eg. map(e-> e*e)
+- .sorted()- sort input stream in ascending order and return resulted stream
+- .distinct() - returns stream with distinct elements
+- IntStream.range(int startInclusive,int endExclusive)- Returns a sequential ordered IntStream from startInclusive(inclusive) to endInclusive (exclusive) by an incremental step of 1. eg.IntStream.range(1,10)...ranges from 1 to 9
+- IntStream.rangeClosed(int startInclusive, int endInclusive) - Returns a sequential ordered IntStream from startInclusive(inclusive) to endInclusive (inclusive) by an incremental step of 1. eg.IntStream.range(1,10)...ranges from 1 to 10
+- Stream can have multiple intermediate operations
+- boxed() - covert IntStream to Stream<T> i.e. Stream<Integer>
+
+**Optional<T> - A container object which may or may not contain a non-null value.If a value is present, isPresent() returns true. If novalue is present, the object is considered empty and isPresent() returns false
+- Optional is primarily intended for use as a method return type where there is a clear need to represent "no result," and where using null is likely to cause errors
+- isPresent() - If a value is present, isPresent() returns true. If novalue is present, the object is considered empty and isPresent() returns false
+- .get() - If a value is present, returns the value, otherwise throws NoSuchElementException.
+- .orElse(default_value) - returns a default value if no value is present
+
+Stream Terminal Operations:
+- consumes a stream and produce a result
+- .reduce(0, (n1,n2)-> n1+n2) - reduce to a single value
+- max((n1,n2)-> Integer.compare(n1, n2)) - an Optional describing the maximum element of this stream,or an empty Optional if the stream is empty
+- min((n1,n2)-> Integer.compare(n2,n2)) - Returns the minimum element of this stream according to the provided Comparator. This is a special case of a reduction. 
+- .collect(Collectors.toList()) - Performs a mutablereduction operation on the elements of this stream using a Collector - Implementations of Collector that implement various useful reductionoperations, such as accumulating elements into collections, summarizingelements according to various criteria, etc. 
+
+The following are examples of using the predefined collectors to performcommon mutable reduction tasks: 
+
+ // Accumulate names into a List
+ List<String> list = people.stream()
+   .map(Person::getName)
+   .collect(Collectors.toList());
+
+ // Accumulate names into a TreeSet
+ Set<String> set = people.stream()
+   .map(Person::getName)
+   .collect(Collectors.toCollection(TreeSet::new));
+
+ // Convert elements to strings and concatenate them, separated by commas
+ String joined = things.stream()
+   .map(Object::toString)
+   .collect(Collectors.joining(", "));
+
+ // Compute sum of salaries of employee
+ int total = employees.stream()
+   .collect(Collectors.summingInt(Employee::getSalary));
+
+ // Group employees by department
+ Map<Department, List<Employee>> byDept = employees.stream()
+   .collect(Collectors.groupingBy(Employee::getDepartment));
+
+ // Compute sum of salaries by department
+ Map<Department, Integer> totalByDept = employees.stream()
+   .collect(Collectors.groupingBy(Employee::getDepartment,
+                                  Collectors.summingInt(Employee::getSalary)));
+
+ // Partition students into passing and failing
+ Map<Boolean, List<Student>> passingFailing = students.stream()
+   .collect(Collectors.partitioningBy(s -> s.getGrade() >= PASS_THRESHOLD));
+
+
+****Lambda Expressions****
+- Lambda Expressions are anonymous,while regular methods have names
+- Lambda Expressions are concise ,while regular methods can be multiple line of code
+- Lambda expression are type inferred while regular methods need to explicitely specify their type
+
+****Method References*****
+- Method references can be used with static as well as instance methods like String::length,Integer::compare
+
+import java.util.List;
+
+public class MethodReferencesRunner {
+	
+	public static void print(Integer number)
+	{
+		System.out.println(number);
+	}
+	
+	public static boolean isEven(int num)
+	{
+		return num%2==0;
+	}
+	
+	public static void main(String[] args) {
+		List.of("Ant","Cat","dog","Elephant").stream()
+			.map(e-> e.length()).forEach(e-> System.out.println(e));
+							//or
+		List.of("Ant","Bat","Cat","dog","Elephant").stream()
+		.map(e-> e.length()).forEach(System.out::println);
+							//or
+		List.of("Ant","Bat","Cat","dog","Elephant").stream()
+		.map(String::length).forEach(MethodReferencesRunner::print);
+					    //className		   //methodToBeExecutedOfThatClass
+		
+		int max=List.of(21,45,36,24,22).stream()
+				.filter(MethodReferencesRunner::isEven)
+				.max(Integer::compare).orElse(0);
+		
+		System.out.println(max);
+	}
+
+} 
