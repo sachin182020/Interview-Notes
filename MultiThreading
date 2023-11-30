@@ -1,0 +1,58 @@
+2 ways to create Thread :
+- implement Runnable interface - override public void run() method and write task performed by that thread in it
+- extend Thread class - create public void run() method and write task performed by that thread in it
+
+States of Thread 
+New - Before the execution of start() thread method
+Runnable - 
+Running
+Blocked/Waiting
+Terminated
+
+Set Priority request for Threads - just a request for priority which may or may not be honoured. doesn't actully ensure order
+syntax: threadName.setPriority(priority);
+/**
+     * The minimum priority that a thread can have.
+     */
+    public static final int MIN_PRIORITY = 1;
+
+    /**
+     * The default priority that is assigned to a thread.
+     */
+    public static final int NORM_PRIORITY = 5;
+
+    /**
+     * The maximum priority that a thread can have.
+     */
+    public static final int MAX_PRIORITY = 10;
+
+*Static methods of Thread class*
+
+Communication between threads - join method - join method is used to wait for that thread to complete
+syntax : threadName.join();
+
+sleep(milisecs) method of Thread class to put thread into sleep/wait state
+syntax : eg. threadName.sleep(1000);
+
+yeild() - request to scheduler that current thread is willing to giveup/yeild current use of processor. scheduler can ignore this request
+syntax: eg. threadName.yeild();
+
+**Synchronized keyword - If you put synchronized keyword on instance/method only thread can access it at a time other thread will have to 
+			 wait for access until first thread execution completes
+
+
+**ExecutorService***
+An ExecutorService is a Java interface that provides a way to execute tasks asynchronously. 
+It is a more flexible and powerful alternative to the Thread class
+ExecutorService executorService = Executors.newSingleThreadExecutor();
+executorService.execute(new Task1())
+ExecutorService executorService = Executors.newSingleThreadExecutor(); - provides facility to run one thread at a time
+executorService.execute(new Task1()); 		  -- execute() method to execute Task1 thread (Task1 Thread class)
+executorService.execute(new Thread(new Task2())); -- Task2() runnable interface passed to Thread class then execute()
+executorService.shutdown(); - If executorService is not shutdown programs keeps on running
+
+**Customized ExecutorService**
+ExecutorService executorService = Executors.newFixedThreadPool(n); -- At any point n threads will be active
+ExecutorService executorService = Executors.newFixedThreadPool(2); -- In this case 2 threads will run
+
+**Return value from threads**
