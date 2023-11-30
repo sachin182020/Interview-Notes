@@ -1,0 +1,88 @@
+Lambda Expression
+- Useful in Collection library. Helps to iterate, filter and extract data from collection.
+- Used to provide implementation of interface having functional interface. 
+- lambda expression is treated as function so compiler does not create .class file
+- lambda expression provide implementation of Functional Interface
+
+Functional Interface - Interface which has only 1 abstract method is called Functional Interface
+- @FunctionalInterface annotation is used to declare an interface as functional interface
+- Runnable interface in java.lang packge is functional interface because it contains only 1 method i.e.run()
+
+Why lambda expression - 1) provide implementation of functional interface 2) Less coding
+
+Lambda expression consists of 2 components - (argument-list), -> arrow component, body {}
+eg 1) (p1) -> { 
+//Body of single parameter lambda  
+ }
+2) (p1,p2) -> {
+	//Body of multiple parameter lambda  
+ }
+
+Anonymous class - A class can contain another class known as nested class. It is possible to create this nested class without giving any name hence called as anonymous class or anonymous inner class.
+** Anonymous class usually extend Parent classes or implement interfaces
+
+eg1. Anonymous class extending a class
+class Polygon{
+	public void display()
+	{	
+		System.out.print("This is polygon class");
+	}
+}
+
+class AnonymousDemo{
+	
+	public void createAnonymousClass()
+	{
+		//Creation of anonymous class extending polygon
+		Polygon p1= new Polygon(){
+			public void display() //Overriding display method of Polygon class
+			{
+				System.out.print("Inside anonymous class");
+			}
+		}; //Anonymous classes are defined inside an expression. So, the semicolon is used at the end of anonymous classes to indicate the end of the expression.
+
+		p1.display();
+	}
+
+	public static void main(String[] args)
+	{
+		AnonymousDemo an= new AnonymousDemo();
+		an.createAnonymouseClass();
+	}
+}
+ 
+Result: Inside anonymous class
+
+Note:When we run the program object p1 is created of anonymous class.The object p1 calls the display method
+
+eg2. Anonymous class implementing an interface
+
+interface Polygon{
+	public void display();
+}
+
+class AnonymousDemo{
+	public void createAnonymousClass()
+	{
+		//anonymous class implementing interface
+		Polygon p1= new Polygon(){
+			public void display()
+			{
+				System.out.print("Inside anonymous class");
+			}
+		};
+		p1.display();
+	}
+	
+
+	public static void main(String[] args)
+	{
+		AnonymousDemo an= new AnonymousDemo();
+		an.createAnonymousClass();
+	}
+}
+
+
+
+
+
