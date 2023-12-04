@@ -1,6 +1,55 @@
 2 ways to create Thread :
 - implement Runnable interface - override public void run() method and write task performed by that thread in it
 - extend Thread class - create public void run() method and write task performed by that thread in it
+- The Runnable interface is a functional interface and has a single run() method that doesn’t accept any parameters or return any values.
+- With Runnable Since the method signature does not have the “throws” clause specified, we don’t have a way to propagate further checked exceptions.
+
+* The Callable interface is a generic interface containing a single call() method that returns a generic value V:
+
+public interface Callable<V> {
+    V call() throws Exception;
+}
+
+Let’s look at calculating the factorial of a number:
+
+public class FactorialTask implements Callable<Integer> {
+    int number;
+
+    // standard constructors
+
+    public Integer call() throws InvalidParamaterException {
+        int fact = 1;
+        // ...
+        for(int count = number; count > 1; count--) {
+            fact = fact * count;
+        }
+
+        return fact;
+    }
+}
+
+The result of call() method is returned within a Future object:
+
+@Test
+public void whenTaskSubmitted_ThenFutureResultObtained(){
+    FactorialTask task = new FactorialTask(5);
+    Future<Integer> future = executorService.submit(task);
+ 
+    assertEquals(120, future.get().intValue());
+}
+
+Callable‘s call() method contains the “throws Exception” clause, so we can easily propagate checked exceptions further:
+
+public class FactorialTask implements Callable<Integer> {
+    // ...
+    public Integer call() throws InvalidParamaterException {
+
+        if(number < 0) {
+            throw new InvalidParamaterException("Number should be positive");
+        }
+    // ...
+    }
+}
 
 States of Thread 
 New - Before the execution of start() thread method
